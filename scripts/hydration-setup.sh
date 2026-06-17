@@ -35,6 +35,6 @@ NEXT=$(( $(now) + INTERVAL_MIN * 60 ))
 write_state next_due "$NEXT" reminded_at null grace_deadline null postpone_count 0 locked false
 
 echo "✅ stay-hydrated configurado."
-echo "   Meta: ${DAILY_ML}ml/dia em ${CC_HOURS}h de uso → ${NUM_DRINKS} goles de ${PER_DRINK_ML}ml"
+echo "   Meta: ${DAILY_ML}ml/dia em ${CC_HOURS}h de uso → ${NUM_DRINKS} copos de ${PER_DRINK_ML}ml"
 echo "   Lembrete a cada ${INTERVAL_MIN} min · janela de ${GRACE_MIN} min · ${MAX_POSTPONES} adiamentos de ${POSTPONE_MIN} min"
 echo "   Próximo lembrete em ${INTERVAL_MIN} min."

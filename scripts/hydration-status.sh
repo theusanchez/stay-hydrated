@@ -6,7 +6,7 @@ source "$DIR/hydration-lib.sh"
 
 if ! has_config; then
   echo "stay-hydrated não está configurado ainda."
-  echo "Rode: /stay-hydrated setup <ml_por_dia> <horas_de_uso> [ml_por_gole]"
+  echo "Rode: /stay-hydrated setup <ml_por_dia> <horas_de_uso> [ml_por_copo]"
   echo "Ex.:  /stay-hydrated setup 3000 8 250"
   exit 0
 fi
@@ -24,7 +24,7 @@ GRACE=$(read_state grace_deadline null)
 COUNT=$(read_state postpone_count 0)
 
 echo "💧 stay-hydrated"
-echo "   Meta: ${DAILY_ML}ml/dia · ${NUM_DRINKS} goles de ${PER_DRINK_ML}ml em ${CC_HOURS}h · 1 gole a cada ${INTERVAL_MIN} min"
+echo "   Meta: ${DAILY_ML}ml/dia · ${NUM_DRINKS} copos de ${PER_DRINK_ML}ml em ${CC_HOURS}h · 1 copo a cada ${INTERVAL_MIN} min"
 if [[ "$REMINDED" != "null" ]]; then
   if [[ "$GRACE" != "null" ]]; then
     LEFT=$(mins_ceil "$(secs_until "$GRACE")")

@@ -16,8 +16,8 @@ That's the point: you can't keep working without hydrating.
   tool with exit code 2 until you confirm. The control commands are always whitelisted,
   so you can never soft-lock yourself.
 
-The interval is `(hours_using_cc × 60) ÷ (daily_ml ÷ ml_per_sip)`.
-Example: 3000 ml/day over 8 h with 250 ml sips → 12 sips → one every 40 min.
+The interval is `(hours_using_cc × 60) ÷ (daily_ml ÷ ml_per_glass)`.
+Example: 3000 ml/day over 8 h with 250 ml glasses → 12 glasses → one every 40 min.
 
 ## Install
 
@@ -31,13 +31,13 @@ Or for local development, point a marketplace at this directory.
 ## Usage
 
 ```bash
-/stay-hydrated setup 3000 8 250   # ml/day, hours/day on Claude Code, ml/sip
+/stay-hydrated setup 3000 8 250   # ml/day, hours/day on Claude Code, ml/glass
 /stay-hydrated status             # where you are in the cycle
 /stay-hydrated drank              # confirm you drank → unlock + restart timer
 /stay-hydrated postpone           # buy +5 min (max 2x, then hard lock)
 ```
 
-`setup` accepts extra tuning args: `setup <ml/day> <hours> <ml/sip> <grace_min> <max_postpones> <postpone_min>`.
+`setup` accepts extra tuning args: `setup <ml/day> <hours> <ml/glass> <grace_min> <max_postpones> <postpone_min>`.
 
 ## State
 
