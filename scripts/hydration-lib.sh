@@ -47,3 +47,53 @@ write_state() {
 # Minutes/seconds left until an epoch (floored, never negative)
 secs_until() { local t=$1; local n; n=$(now); local d=$(( t - n )); (( d < 0 )) && d=0; echo "$d"; }
 mins_ceil() { local s=$1; echo $(( (s + 59) / 60 )); }
+
+today_str() { date +%Y-%m-%d; }
+
+# Epoch of today's configured start hour (portable: no `date -d`).
+start_epoch() {
+  local sh; sh=$(cfg start_hour 9)
+  local n; n=$(now)
+  local H M S secs mid
+  H=$(date +%H); M=$(date +%M); S=$(date +%S)
+  secs=$(( 10#$H * 3600 + 10#$M * 60 + 10#$S ))
+  mid=$(( n - secs ))
+  echo $(( mid + sh * 3600 ))
+}
+
+# The hydration day is active between today's start hour and the next day's.
+# Reminders only fire while active; before the start hour we stay silent.
+day_active() {
+  local n start today day
+  n=$(now); start=$(start_epoch); today=$(today_str)
+  day=$(read_state day none)
+  (( n >= start )) && [[ "$day" == "$today" ]]
+}
+
+goal_met() { [[ "$(read_state goal_met false)" == "true" ]]; }
+
+# Roll the day over: deactivate before the start hour, and start a fresh cycle
+# (reset counter, re-anchor next reminder) on the first activity after it.
+# Idempotent — safe to call from every hook.
+ensure_day() {
+  has_config || return 0
+  local n start today day interval next
+  n=$(now); start=$(start_epoch); today=$(today_str)
+  day=$(read_state day none)
+  interval=$(cfg interval_min 40)
+
+  if (( n < start )); then
+    # Before today's start hour: yesterday's day is over.
+    if [[ "$day" != "none" && "$day" < "$today" ]]; then
+      write_state day '"none"' reminded_at null grace_deadline null locked false
+    fi
+    return 0
+  fi
+
+  # At/after the start hour → today should be the active day.
+  if [[ "$day" != "$today" ]]; then
+    next=$(( n + interval * 60 ))
+    write_state day "\"$today\"" drinks_today 0 goal_met false \
+      next_due "$next" reminded_at null grace_deadline null postpone_count 0 locked false
+  fi
+}

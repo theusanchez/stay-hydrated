@@ -5,9 +5,11 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$DIR/hydration-lib.sh"
 
 if ! has_config; then
-  echo "stay-hydrated não está configurado. Rode: /stay-hydrated setup"
+  echo "stay-hydrated não está configurado. Rode: /stay-hydrated:setup"
   exit 0
 fi
+
+ensure_day
 
 REMINDED=$(read_state reminded_at null)
 if [[ "$REMINDED" == "null" ]]; then
@@ -20,7 +22,7 @@ POSTPONE_MIN=$(cfg postpone_min 5)
 COUNT=$(read_state postpone_count 0)
 
 if (( COUNT >= MAX )); then
-  echo "🚫 Sem mais adiamentos (${COUNT}/${MAX}). Beba água e rode: /stay-hydrated drank"
+  echo "🚫 Sem mais adiamentos (${COUNT}/${MAX}). Beba água e rode: /stay-hydrated:drank"
   exit 0
 fi
 

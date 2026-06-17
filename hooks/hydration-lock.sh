@@ -14,6 +14,10 @@ if echo "$CMD" | grep -qE 'hydration-(drank|postpone|status|setup)\.sh'; then
   exit 0
 fi
 
+ensure_day
+day_active || exit 0    # before the day's start hour → never lock
+goal_met && exit 0      # daily goal reached → never lock
+
 REMINDED=$(read_state reminded_at null)
 [[ "$REMINDED" == "null" ]] && exit 0
 
@@ -30,9 +34,9 @@ COUNT=$(read_state postpone_count 0)
 write_state locked true
 
 if (( COUNT >= MAX )); then
-  echo "🔒 HIDRATAÇÃO OBRIGATÓRIA — sem mais adiamentos (${COUNT}/${MAX}). Beba ${PER_DRINK_ML}ml de água e rode /stay-hydrated drank para liberar as tools." >&2
+  echo "🔒 HIDRATAÇÃO OBRIGATÓRIA — sem mais adiamentos (${COUNT}/${MAX}). Beba ${PER_DRINK_ML}ml de água e rode /stay-hydrated:drank para liberar as tools." >&2
 else
   LEFT=$(( MAX - COUNT ))
-  echo "🔒 HORA DA ÁGUA — beba ${PER_DRINK_ML}ml e rode /stay-hydrated drank. Ou /stay-hydrated postpone para +tempo (restam ${LEFT} adiamento(s))." >&2
+  echo "🔒 HORA DA ÁGUA — beba ${PER_DRINK_ML}ml e rode /stay-hydrated:drank. Ou /stay-hydrated:postpone para +tempo (restam ${LEFT} adiamento(s))." >&2
 fi
 exit 2

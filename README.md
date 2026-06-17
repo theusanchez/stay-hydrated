@@ -11,6 +11,7 @@ Claude Code hooks are event-driven, not a background timer — so reminders and 
 surface on your **next interaction** (when you send a prompt or Claude runs a tool).
 That's the point: you can't keep working without hydrating.
 
+- **`SessionStart` hook** → anchors the hydration day when you begin/resume working.
 - **`UserPromptSubmit` hook** → when the interval is due, injects a "drink water" nudge.
 - **`PreToolUse` hook (all tools)** → once the 5-minute window expires, blocks every
   tool with exit code 2 until you confirm. The control commands are always whitelisted,
@@ -18,6 +19,16 @@ That's the point: you can't keep working without hydrating.
 
 The interval is `(hours_using_cc × 60) ÷ (daily_ml ÷ ml_per_glass)`.
 Example: 3000 ml/day over 8 h with 250 ml glasses → 12 glasses → one every 40 min.
+
+### When the day starts and ends
+
+- **Start** — you set a fixed `start_hour` (default 9). Before that hour the plugin is
+  silent. The first interaction after it begins the day: the counter resets and the
+  first reminder is anchored one interval later.
+- **End** — once you've had your `daily_ml ÷ ml_per_glass` glasses, the goal is met and
+  the plugin goes quiet (and never locks) until the next day's start hour.
+- Because hooks only fire on interaction, closing Claude Code naturally pauses the timer;
+  reopening it resumes (or rolls over to a fresh day).
 
 ## Install
 
@@ -37,13 +48,14 @@ claude --plugin-dir ./stay-hydrated
 Plugin commands are namespaced under `stay-hydrated:`:
 
 ```bash
-/stay-hydrated:setup 3000 8 250   # ml/day, hours/day on Claude Code, ml/glass
-/stay-hydrated:status             # where you are in the cycle
-/stay-hydrated:drank              # confirm you drank → unlock + restart timer
-/stay-hydrated:postpone           # buy +5 min (max 2x, then hard lock)
+/stay-hydrated:setup 3000 8 250 9   # ml/day, hours/day on CC, ml/glass, start hour
+/stay-hydrated:status               # progress + where you are in the day
+/stay-hydrated:drank                # confirm you drank → unlock + count the glass
+/stay-hydrated:postpone             # buy +5 min (max 2x, then hard lock)
 ```
 
-`setup` accepts extra tuning args: `setup <ml/day> <hours> <ml/glass> <grace_min> <max_postpones> <postpone_min>`.
+`setup` full signature: `setup <ml/day> <hours> <ml/glass> <start_hour> <grace_min> <max_postpones> <postpone_min>`
+(only the first two are required; the rest default to `250 9 5 2 5`).
 
 ## State
 
