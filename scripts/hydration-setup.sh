@@ -50,14 +50,14 @@ write_state day '"none"' drinks_today 0 goal_met false \
 
 rm -f "$DISABLED_FILE"  # a fresh setup re-enables the plugin
 
-echo "✅ stay-hydrated configurado."
-echo "   Meta: ${DAILY_ML}ml/dia em ${CC_HOURS}h de uso → ${NUM_DRINKS} copos de ${PER_DRINK_ML}ml"
-echo "   Início do dia: $(start_label) · 1 copo a cada ${INTERVAL_MIN} min"
-echo "   Janela de ${GRACE_MIN} min · ${MAX_POSTPONES} adiamentos de ${POSTPONE_MIN} min"
+echo "✅ stay-hydrated configured."
+echo "   Goal: ${DAILY_ML}ml/day over ${CC_HOURS}h of use → ${NUM_DRINKS} glasses of ${PER_DRINK_ML}ml"
+echo "   Day starts: $(start_label) · one glass every ${INTERVAL_MIN} min"
+echo "   ${GRACE_MIN} min window · ${MAX_POSTPONES} postpones of ${POSTPONE_MIN} min"
 ensure_day
 if day_active; then
-  echo "   Dia ativo — próximo lembrete em ${INTERVAL_MIN} min."
+  echo "   Day active — next reminder in ${INTERVAL_MIN} min."
 else
-  echo "   Aguardando $(start_label) para começar a contar."
+  echo "   Waiting for $(start_label) to start counting."
 fi
-echo "   🛑 Kill switch a qualquer momento: /stay-hydrated:off (ou desative em /plugin)."
+echo "   🛑 Kill switch anytime: /stay-hydrated:off (or disable in /plugin)."

@@ -5,6 +5,8 @@ often you should drink water based on your daily goal and how many hours you use
 Claude Code, nudges you when it's time, and **locks every tool until you confirm you
 drank** — with up to 2 postpones before a hard lock.
 
+![stay-hydrated demo](assets/hydrate.gif)
+
 ## 🛑 Kill switch (read this first)
 
 This plugin can block tools, so it ships with multiple independent escape hatches.

@@ -9,5 +9,5 @@ touch "$DISABLED_FILE"
 # Clear any lingering lock/reminder so nothing is left hanging.
 write_state reminded_at null grace_deadline null locked false 2>/dev/null
 
-echo "🛑 stay-hydrated DESLIGADO. Sem lembretes, sem travas — Claude Code normal."
-echo "   Reative quando quiser com /stay-hydrated:on."
+echo "🛑 stay-hydrated is OFF. No reminders, no locks — normal Claude Code."
+echo "   Re-enable anytime with /stay-hydrated:on."

@@ -42,11 +42,11 @@ MAX=$(cfg max_postpones 2)
 COUNT=$(read_state postpone_count 0)
 write_state locked true 2>/dev/null
 
-ESC="Travou e não devia? /stay-hydrated:off desliga tudo (ou desative o plugin em /plugin)."
+ESC="Locked and shouldn't be? /stay-hydrated:off disables everything (or disable the plugin in /plugin)."
 if (( COUNT >= MAX )); then
-  echo "🔒 HIDRATAÇÃO OBRIGATÓRIA — sem mais adiamentos (${COUNT}/${MAX}). Beba ${PER_DRINK_ML}ml e rode /stay-hydrated:drank. ${ESC}" >&2
+  echo "🔒 HYDRATION REQUIRED — no postpones left (${COUNT}/${MAX}). Drink ${PER_DRINK_ML}ml and run /stay-hydrated:drank. ${ESC}" >&2
 else
   LEFT=$(( MAX - COUNT ))
-  echo "🔒 HORA DA ÁGUA — beba ${PER_DRINK_ML}ml e rode /stay-hydrated:drank (ou /stay-hydrated:postpone, restam ${LEFT}). ${ESC}" >&2
+  echo "🔒 TIME FOR WATER — drink ${PER_DRINK_ML}ml and run /stay-hydrated:drank (or /stay-hydrated:postpone, ${LEFT} left). ${ESC}" >&2
 fi
 exit 2

@@ -6,8 +6,8 @@ source "$DIR/hydration-lib.sh"
 rm -f "$DISABLED_FILE"
 
 if [[ -n "${STAY_HYDRATED_OFF:-}" ]]; then
-  echo "✅ Sentinela removida, mas a variável STAY_HYDRATED_OFF ainda está setada nesta sessão."
-  echo "   Saia dessa env (ou reinicie o Claude Code sem ela) para reativar de fato."
+  echo "✅ Sentinel removed, but STAY_HYDRATED_OFF is still set in this session."
+  echo "   Unset it (or restart Claude Code without it) to actually re-enable."
 else
-  echo "✅ stay-hydrated reativado. Lembretes voltam no próximo ciclo."
+  echo "✅ stay-hydrated re-enabled. Reminders resume next cycle."
 fi
