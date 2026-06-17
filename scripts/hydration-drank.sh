@@ -13,10 +13,9 @@ ensure_day
 
 INTERVAL_MIN=$(cfg interval_min 40)
 NUM_DRINKS=$(cfg num_drinks 12)
-START_HOUR=$(cfg start_hour 9)
 
 if ! day_active; then
-  echo "💧 Registrado, mas o dia de hidratação só começa às ${START_HOUR}h — fora disso não conto pra meta."
+  echo "💧 Registrado, mas o dia de hidratação só começa às $(start_label) — fora disso não conto pra meta."
   exit 0
 fi
 
@@ -25,7 +24,7 @@ DRANK=$(( DRANK + 1 ))
 
 if (( DRANK >= NUM_DRINKS )); then
   write_state drinks_today "$DRANK" goal_met true reminded_at null grace_deadline null postpone_count 0 locked false
-  echo "🎉 Meta batida! ${DRANK}/${NUM_DRINKS} copos hoje. Sem mais lembretes até amanhã às ${START_HOUR}h."
+  echo "🎉 Meta batida! ${DRANK}/${NUM_DRINKS} copos hoje. Sem mais lembretes até amanhã às $(start_label)."
 else
   NEXT=$(( $(now) + INTERVAL_MIN * 60 ))
   write_state drinks_today "$DRANK" next_due "$NEXT" reminded_at null grace_deadline null postpone_count 0 locked false

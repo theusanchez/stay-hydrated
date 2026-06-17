@@ -1,6 +1,6 @@
 {
   "name": "stay-hydrated",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Hydration coach for Claude Code. Reminds you to drink water on a computed interval and locks all tools until you confirm you drank — with up to 2 postpones.",
   "author": {
     "name": "Matheus Sanchez"

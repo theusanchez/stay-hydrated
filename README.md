@@ -5,6 +5,22 @@ often you should drink water based on your daily goal and how many hours you use
 Claude Code, nudges you when it's time, and **locks every tool until you confirm you
 drank** — with up to 2 postpones before a hard lock.
 
+## 🛑 Kill switch (read this first)
+
+This plugin can block tools, so it ships with multiple independent escape hatches.
+**Any one of them instantly restores normal Claude Code** — even while a lock is active:
+
+| Escape        | How                                                                    |
+| ------------- | ---------------------------------------------------------------------- |
+| Turn it off   | `/stay-hydrated:off` (re-enable later with `/stay-hydrated:on`)        |
+| Sentinel file | `touch ~/.stay-hydrated/DISABLED` (whitelisted, works while locked)    |
+| Env var       | relaunch with `STAY_HYDRATED_OFF=1`                                    |
+| Remove it     | disable/uninstall in `/plugin` — slash commands always bypass the lock |
+
+The lock hook is **fail-open**: any error, missing or corrupt state, or kill switch
+results in _allow_. It only ever blocks under one explicit, fully-checked condition.
+A bug cannot permanently trap you.
+
 ## How it works
 
 Claude Code hooks are event-driven, not a background timer — so reminders and locks
@@ -48,13 +64,17 @@ claude --plugin-dir ./stay-hydrated
 Plugin commands are namespaced under `stay-hydrated:`:
 
 ```bash
-/stay-hydrated:setup 3000 8 250 9   # ml/day, hours/day on CC, ml/glass, start hour
-/stay-hydrated:status               # progress + where you are in the day
-/stay-hydrated:drank                # confirm you drank → unlock + count the glass
-/stay-hydrated:postpone             # buy +5 min (max 2x, then hard lock)
+/stay-hydrated:setup 3000 8 250 8:30   # ml/day, hours/day on CC, ml/glass, start time
+/stay-hydrated:status                  # progress + where you are in the day
+/stay-hydrated:drank                   # confirm you drank → unlock + count the glass
+/stay-hydrated:postpone                # buy +5 min (max 2x, then hard lock)
+/stay-hydrated:off                     # kill switch — disable reminders and locks
+/stay-hydrated:on                      # re-enable after :off
 ```
 
-`setup` full signature: `setup <ml/day> <hours> <ml/glass> <start_hour> <grace_min> <max_postpones> <postpone_min>`
+The start time accepts a whole hour (`9`) or `HH:MM` (`8:30`).
+
+`setup` full signature: `setup <ml/day> <hours> <ml/glass> <start_time> <grace_min> <max_postpones> <postpone_min>`
 (only the first two are required; the rest default to `250 9 5 2 5`).
 
 ## State
