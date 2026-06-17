@@ -22,19 +22,25 @@ Example: 3000 ml/day over 8 h with 250 ml glasses → 12 glasses → one every 4
 ## Install
 
 ```bash
-/plugin marketplace add <your-username>/stay-hydrated
-/plugin install stay-hydrated
+/plugin marketplace add theusanchez/stay-hydrated
+/plugin install stay-hydrated@stay-hydrated
 ```
 
-Or for local development, point a marketplace at this directory.
+For local development, load it directly without installing:
+
+```bash
+claude --plugin-dir ./stay-hydrated
+```
 
 ## Usage
 
+Plugin commands are namespaced under `stay-hydrated:`:
+
 ```bash
-/stay-hydrated setup 3000 8 250   # ml/day, hours/day on Claude Code, ml/glass
-/stay-hydrated status             # where you are in the cycle
-/stay-hydrated drank              # confirm you drank → unlock + restart timer
-/stay-hydrated postpone           # buy +5 min (max 2x, then hard lock)
+/stay-hydrated:setup 3000 8 250   # ml/day, hours/day on Claude Code, ml/glass
+/stay-hydrated:status             # where you are in the cycle
+/stay-hydrated:drank              # confirm you drank → unlock + restart timer
+/stay-hydrated:postpone           # buy +5 min (max 2x, then hard lock)
 ```
 
 `setup` accepts extra tuning args: `setup <ml/day> <hours> <ml/glass> <grace_min> <max_postpones> <postpone_min>`.

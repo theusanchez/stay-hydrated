@@ -5,6 +5,8 @@
   "author": {
     "name": "Matheus Sanchez"
   },
+  "homepage": "https://github.com/theusanchez/stay-hydrated",
+  "repository": "https://github.com/theusanchez/stay-hydrated",
   "keywords": ["health", "hydration", "wellness", "hooks", "reminder"],
   "license": "MIT"
 }
